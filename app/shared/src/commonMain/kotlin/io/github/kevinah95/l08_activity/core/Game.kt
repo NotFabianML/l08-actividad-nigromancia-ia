@@ -103,7 +103,9 @@ class Game : GameSession {
     fun die(target: GameObject, killer: GameObject? = null) {
         val death = Death(target, killer)
 
-        // TODO: Spawnear cadáver si corresponde antes del despawn
+        if ((target.isTagged(Tags.LIVING) || target.isTagged(Tags.MOBILE)) && target.corpseChance > 0) {
+            spawn(createCorpse(), target.x, target.y)
+        }
 
         target.onDeath(death)
         despawn(target)
